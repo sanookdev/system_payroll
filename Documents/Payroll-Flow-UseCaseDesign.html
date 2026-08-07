@@ -1,168 +1,826 @@
 <title>Payroll System — Flow & Use Case Design</title>
 <style>
   :root {
-    --paper: #FBFAF8; --ink: #1C2229; --ink-soft: #4A4E55; --muted: #7C7A72;
-    --line: #E0DCD2; --line-strong: #CBC6B9; --primary: #0F5E5A; --primary-soft: #E7F0EF;
-    --accent: #B7862F; --accent-soft: #F6EEDD; --panel: #FFFFFF; --board: #FCFBF9;
-    --src: #5B7C99; --src-soft: #E8EEF4; --user: #B7862F; --user-soft: #F6EEDD;
-    --good: #2F7D4F; --good-soft: #DFF0E4; --crit: #A23A2E; --crit-soft: #FDECEA;
-    --sys: #8A857A; --sys-soft: #F1EEE6;
-    --shadow: 0 1px 2px rgba(28,34,41,.05), 0 8px 24px rgba(28,34,41,.06);
+    --paper: #FBFAF8;
+    --ink: #1C2229;
+    --ink-soft: #4A4E55;
+    --muted: #7C7A72;
+    --line: #E0DCD2;
+    --line-strong: #CBC6B9;
+    --primary: #0F5E5A;
+    --primary-soft: #E7F0EF;
+    --accent: #B7862F;
+    --accent-soft: #F6EEDD;
+    --panel: #FFFFFF;
+    --board: #FCFBF9;
+    --src: #5B7C99;
+    --src-soft: #E8EEF4;
+    --user: #B7862F;
+    --user-soft: #F6EEDD;
+    --good: #2F7D4F;
+    --good-soft: #DFF0E4;
+    --crit: #A23A2E;
+    --crit-soft: #FDECEA;
+    --sys: #8A857A;
+    --sys-soft: #F1EEE6;
+    --shadow: 0 1px 2px rgba(28, 34, 41, .05), 0 8px 24px rgba(28, 34, 41, .06);
     --maxw: 1080px;
   }
+
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #14171B; --ink: #ECEAE3; --ink-soft: #B8B6AE; --muted: #8B887F;
-      --line: #2A2E34; --line-strong: #3A3F46; --primary: #56B7B0; --primary-soft: #13312F;
-      --accent: #D9A94A; --accent-soft: #2C2416; --panel: #1B1F24; --board: #191D22;
-      --src: #8FB0CC; --src-soft: #1E2A34; --user: #D9A94A; --user-soft: #2C2416;
-      --good: #6FBF8F; --good-soft: #16301F; --crit: #E08A7E; --crit-soft: #2E1815;
-      --sys: #9E988B; --sys-soft: #23262B;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+      --paper: #14171B;
+      --ink: #ECEAE3;
+      --ink-soft: #B8B6AE;
+      --muted: #8B887F;
+      --line: #2A2E34;
+      --line-strong: #3A3F46;
+      --primary: #56B7B0;
+      --primary-soft: #13312F;
+      --accent: #D9A94A;
+      --accent-soft: #2C2416;
+      --panel: #1B1F24;
+      --board: #191D22;
+      --src: #8FB0CC;
+      --src-soft: #1E2A34;
+      --user: #D9A94A;
+      --user-soft: #2C2416;
+      --good: #6FBF8F;
+      --good-soft: #16301F;
+      --crit: #E08A7E;
+      --crit-soft: #2E1815;
+      --sys: #9E988B;
+      --sys-soft: #23262B;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
     }
   }
+
   :root[data-theme="light"] {
-    --paper:#FBFAF8;--ink:#1C2229;--ink-soft:#4A4E55;--muted:#7C7A72;--line:#E0DCD2;--line-strong:#CBC6B9;
-    --primary:#0F5E5A;--primary-soft:#E7F0EF;--accent:#B7862F;--accent-soft:#F6EEDD;--panel:#FFFFFF;--board:#FCFBF9;
-    --src:#5B7C99;--src-soft:#E8EEF4;--user:#B7862F;--user-soft:#F6EEDD;--good:#2F7D4F;--good-soft:#DFF0E4;
-    --crit:#A23A2E;--crit-soft:#FDECEA;--sys:#8A857A;--sys-soft:#F1EEE6;
-    --shadow:0 1px 2px rgba(28,34,41,.05),0 8px 24px rgba(28,34,41,.06);
-  }
-  :root[data-theme="dark"] {
-    --paper:#14171B;--ink:#ECEAE3;--ink-soft:#B8B6AE;--muted:#8B887F;--line:#2A2E34;--line-strong:#3A3F46;
-    --primary:#56B7B0;--primary-soft:#13312F;--accent:#D9A94A;--accent-soft:#2C2416;--panel:#1B1F24;--board:#191D22;
-    --src:#8FB0CC;--src-soft:#1E2A34;--user:#D9A94A;--user-soft:#2C2416;--good:#6FBF8F;--good-soft:#16301F;
-    --crit:#E08A7E;--crit-soft:#2E1815;--sys:#9E988B;--sys-soft:#23262B;
-    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+    --paper: #FBFAF8;
+    --ink: #1C2229;
+    --ink-soft: #4A4E55;
+    --muted: #7C7A72;
+    --line: #E0DCD2;
+    --line-strong: #CBC6B9;
+    --primary: #0F5E5A;
+    --primary-soft: #E7F0EF;
+    --accent: #B7862F;
+    --accent-soft: #F6EEDD;
+    --panel: #FFFFFF;
+    --board: #FCFBF9;
+    --src: #5B7C99;
+    --src-soft: #E8EEF4;
+    --user: #B7862F;
+    --user-soft: #F6EEDD;
+    --good: #2F7D4F;
+    --good-soft: #DFF0E4;
+    --crit: #A23A2E;
+    --crit-soft: #FDECEA;
+    --sys: #8A857A;
+    --sys-soft: #F1EEE6;
+    --shadow: 0 1px 2px rgba(28, 34, 41, .05), 0 8px 24px rgba(28, 34, 41, .06);
   }
 
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font-family: "Leelawadee UI", "Noto Sans Thai", "Sarabun", Tahoma, system-ui, sans-serif;
-    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  :root[data-theme="dark"] {
+    --paper: #14171B;
+    --ink: #ECEAE3;
+    --ink-soft: #B8B6AE;
+    --muted: #8B887F;
+    --line: #2A2E34;
+    --line-strong: #3A3F46;
+    --primary: #56B7B0;
+    --primary-soft: #13312F;
+    --accent: #D9A94A;
+    --accent-soft: #2C2416;
+    --panel: #1B1F24;
+    --board: #191D22;
+    --src: #8FB0CC;
+    --src-soft: #1E2A34;
+    --user: #D9A94A;
+    --user-soft: #2C2416;
+    --good: #6FBF8F;
+    --good-soft: #16301F;
+    --crit: #E08A7E;
+    --crit-soft: #2E1815;
+    --sys: #9E988B;
+    --sys-soft: #23262B;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
   }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: clamp(20px,4vw,56px) clamp(16px,4vw,40px) 80px; }
-  code { font-family: "Cascadia Code", Consolas, monospace; font-size: .88em; }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Leelawadee UI", "Noto Sans Thai", "Sarabun", Tahoma, system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: clamp(20px, 4vw, 56px) clamp(16px, 4vw, 40px) 80px;
+  }
+
+  code {
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: .88em;
+  }
 
   /* Header */
-  header.masthead { border-bottom: 2px solid var(--ink); padding-bottom: 22px; }
-  .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 0 0 10px; }
-  h1 { font-size: clamp(26px,4.4vw,40px); line-height: 1.15; margin: 0 0 8px; font-weight: 800; letter-spacing: -.01em; text-wrap: balance; }
-  .sub { color: var(--ink-soft); font-size: clamp(15px,1.6vw,17px); margin: 0; max-width: 64ch; }
-  .meta { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 18px; }
-  .chip { font-size: 12.5px; padding: 4px 11px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); font-weight: 600; }
-  .chip.alt { background: var(--accent-soft); color: var(--accent); }
-  .chip.plain { background: transparent; border: 1px solid var(--line-strong); color: var(--ink-soft); font-weight: 500; }
+  header.masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 22px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-size: clamp(26px, 4.4vw, 40px);
+    line-height: 1.15;
+    margin: 0 0 8px;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+  }
+
+  .sub {
+    color: var(--ink-soft);
+    font-size: clamp(15px, 1.6vw, 17px);
+    margin: 0;
+    max-width: 64ch;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin-top: 18px;
+  }
+
+  .chip {
+    font-size: 12.5px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .chip.alt {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .chip.plain {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
 
   /* Sections */
-  section { margin-top: 46px; }
-  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
-  .sec-num { font-family: Georgia, serif; font-size: 15px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 2px; }
-  h2 { font-size: clamp(20px,2.6vw,26px); margin: 0; font-weight: 750; letter-spacing: -.01em; }
-  .sec-desc { color: var(--ink-soft); margin: 6px 0 0; max-width: 72ch; }
+  section {
+    margin-top: 46px;
+  }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .sec-num {
+    font-family: Georgia, serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+
+  h2 {
+    font-size: clamp(20px, 2.6vw, 26px);
+    margin: 0;
+    font-weight: 750;
+    letter-spacing: -.01em;
+  }
+
+  .sec-desc {
+    color: var(--ink-soft);
+    margin: 6px 0 0;
+    max-width: 72ch;
+  }
 
   /* Actor cards */
-  .grid { display: grid; gap: 14px; }
-  .actors { grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); }
-  .card h3 { margin: 0 0 4px; font-size: 16px; display: flex; align-items: center; gap: 9px; }
-  .role-dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
-  .card p { margin: 0; font-size: 14px; color: var(--ink-soft); }
-  .card .tag { display: inline-block; margin-top: 10px; font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  .actors {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .card h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .role-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex: none;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  .card .tag {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11.5px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
 
   /* ===== Diagram board (pure HTML/CSS, no library) ===== */
-  .board { background: var(--board); border: 1px solid var(--line-strong); border-radius: 14px; padding: clamp(16px,3vw,28px); box-shadow: var(--shadow); overflow-x: auto; }
-  .caption { font-size: 13px; color: var(--muted); margin: 10px 2px 0; }
+  .board {
+    background: var(--board);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    padding: clamp(16px, 3vw, 28px);
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+
+  .caption {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 10px 2px 0;
+  }
 
   /* generic node */
-  .node { border: 1.5px solid var(--primary); background: var(--panel); color: var(--ink); border-radius: 12px; padding: 11px 16px; font-size: 14.5px; font-weight: 600; text-align: center; box-shadow: var(--shadow); line-height: 1.4; }
-  .node small { display: block; font-weight: 500; font-size: 12.5px; color: var(--ink-soft); margin-top: 3px; }
-  .node.pill { border-radius: 999px; }
-  .n-start { border-color: var(--primary); background: var(--primary); color: #fff; }
-  .n-src   { border-color: var(--src); background: var(--src-soft); }
-  .n-fin   { border-color: var(--primary); background: var(--primary-soft); }
-  .n-user  { border-color: var(--user); background: var(--user-soft); }
-  .n-sys   { border-color: var(--line-strong); background: var(--sys-soft); color: var(--ink-soft); }
-  .n-store { border-color: var(--accent); background: var(--accent-soft); }
-  .n-good  { border-color: var(--good); background: var(--good); color: #fff; }
-  .n-ext   { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .node {
+    border: 1.5px solid var(--primary);
+    background: var(--panel);
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-size: 14.5px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: var(--shadow);
+    line-height: 1.4;
+  }
+
+  .node small {
+    display: block;
+    font-weight: 500;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+  }
+
+  .node.pill {
+    border-radius: 999px;
+  }
+
+  .n-start {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .n-src {
+    border-color: var(--src);
+    background: var(--src-soft);
+  }
+
+  .n-fin {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+  }
+
+  .n-user {
+    border-color: var(--user);
+    background: var(--user-soft);
+  }
+
+  .n-sys {
+    border-color: var(--line-strong);
+    background: var(--sys-soft);
+    color: var(--ink-soft);
+  }
+
+  .n-store {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .n-good {
+    border-color: var(--good);
+    background: var(--good);
+    color: #fff;
+  }
+
+  .n-ext {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
 
   /* vertical flow + arrows */
-  .flow { display: flex; flex-direction: column; align-items: center; }
-  .vflow-node { max-width: 460px; width: 100%; }
-  .arrow-down { width: 2px; height: 30px; background: var(--line-strong); position: relative; margin: 7px 0; flex: none; }
-  .arrow-down::after { content: ""; position: absolute; left: 50%; bottom: -1px; transform: translateX(-50%); border: 6px solid transparent; border-top: 8px solid var(--line-strong); }
-  .arrow-down[data-label]::before { content: attr(data-label); position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--ink-soft); background: var(--board); padding: 1px 6px; border-radius: 6px; white-space: nowrap; border: 1px solid var(--line); }
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .vflow-node {
+    max-width: 460px;
+    width: 100%;
+  }
+
+  .arrow-down {
+    width: 2px;
+    height: 30px;
+    background: var(--line-strong);
+    position: relative;
+    margin: 7px 0;
+    flex: none;
+  }
+
+  .arrow-down::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top: 8px solid var(--line-strong);
+  }
+
+  .arrow-down[data-label]::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--board);
+    padding: 1px 6px;
+    border-radius: 6px;
+    white-space: nowrap;
+    border: 1px solid var(--line);
+  }
 
   /* decision */
-  .decision { max-width: 300px; width: 100%; border: 1.5px solid var(--crit); background: var(--crit-soft); color: var(--crit); border-radius: 12px; padding: 12px 16px; text-align: center; font-weight: 700; box-shadow: var(--shadow); }
+  .decision {
+    max-width: 300px;
+    width: 100%;
+    border: 1.5px solid var(--crit);
+    background: var(--crit-soft);
+    color: var(--crit);
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+  }
 
   /* branch: two columns */
-  .branch { display: flex; gap: clamp(16px,4vw,48px); justify-content: center; align-items: flex-start; flex-wrap: wrap; width: 100%; }
-  .branch-col { display: flex; flex-direction: column; align-items: center; flex: 1 1 300px; max-width: 420px; }
-  .branch-tag { font-size: 12.5px; font-weight: 700; padding: 3px 12px; border-radius: 999px; margin-bottom: 2px; }
-  .tag-yes { background: var(--good-soft); color: var(--good); }
-  .tag-no  { background: var(--crit-soft); color: var(--crit); }
-  .loopback { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--src); border: 1px dashed var(--src); border-radius: 8px; padding: 6px 12px; background: var(--src-soft); text-align: center; }
+  .branch {
+    display: flex;
+    gap: clamp(16px, 4vw, 48px);
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .branch-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 300px;
+    max-width: 420px;
+  }
+
+  .branch-tag {
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 999px;
+    margin-bottom: 2px;
+  }
+
+  .tag-yes {
+    background: var(--good-soft);
+    color: var(--good);
+  }
+
+  .tag-no {
+    background: var(--crit-soft);
+    color: var(--crit);
+  }
+
+  .loopback {
+    margin-top: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--src);
+    border: 1px dashed var(--src);
+    border-radius: 8px;
+    padding: 6px 12px;
+    background: var(--src-soft);
+    text-align: center;
+  }
 
   /* fan-out row */
-  .fanout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; margin-top: 4px; }
-  .fanout-col { display: flex; flex-direction: column; align-items: center; }
-  @media (max-width: 720px) { .fanout { grid-template-columns: 1fr; } }
+  .fanout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .fanout-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: 720px) {
+    .fanout {
+      grid-template-columns: 1fr;
+    }
+  }
 
   /* ===== Use case: system boundary + actor lanes ===== */
-  .boundary { border: 2px dashed var(--primary); border-radius: 16px; padding: 20px clamp(14px,2vw,20px) 20px; position: relative; margin: 26px 0 18px; }
-  .boundary-label { position: absolute; top: -13px; left: 20px; background: var(--board); color: var(--primary); font-weight: 700; font-size: 14px; padding: 2px 12px; border-radius: 999px; border: 1.5px solid var(--primary); }
-  .lanes { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px,1fr)); gap: 14px; }
-  .lane { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--lanec, var(--primary)); border-radius: 10px; padding: 12px 13px; box-shadow: var(--shadow); }
-  .lane-h { font-size: 13.5px; font-weight: 750; color: var(--lanec, var(--primary)); margin: 0 0 3px; }
-  .lane-sub { font-size: 11.5px; color: var(--muted); margin: 0 0 10px; }
-  .uc { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--board); margin-bottom: 7px; }
-  .uc:last-child { margin-bottom: 0; }
-  .uc b { color: var(--accent); font-family: Georgia, serif; font-size: 11px; flex: none; padding-top: 2px; }
-  .actor-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4px; }
-  .actor-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff; padding: 7px 14px; border-radius: 999px; }
-  .ext-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-  .ext-card { flex: 1 1 260px; border: 1.5px solid var(--accent); border-radius: 10px; padding: 11px 14px; background: var(--accent-soft); }
-  .ext-card h4 { margin: 0 0 3px; font-size: 13.5px; color: var(--accent); display: flex; align-items: center; gap: 7px; }
-  .ext-card p { margin: 0; font-size: 12.5px; color: var(--ink-soft); }
-  .rel { margin-top: 16px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; padding: 12px 16px; }
-  .rel h4 { margin: 0 0 8px; font-size: 13px; color: var(--ink); text-transform: uppercase; letter-spacing: .04em; }
-  .rel ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-soft); }
-  .rel li { margin: 4px 0; }
-  .rel em { color: var(--primary); font-style: normal; font-weight: 700; }
+  .boundary {
+    border: 2px dashed var(--primary);
+    border-radius: 16px;
+    padding: 20px clamp(14px, 2vw, 20px) 20px;
+    position: relative;
+    margin: 26px 0 18px;
+  }
+
+  .boundary-label {
+    position: absolute;
+    top: -13px;
+    left: 20px;
+    background: var(--board);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 2px 12px;
+    border-radius: 999px;
+    border: 1.5px solid var(--primary);
+  }
+
+  .lanes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    gap: 14px;
+  }
+
+  .lane {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--lanec, var(--primary));
+    border-radius: 10px;
+    padding: 12px 13px;
+    box-shadow: var(--shadow);
+  }
+
+  .lane-h {
+    font-size: 13.5px;
+    font-weight: 750;
+    color: var(--lanec, var(--primary));
+    margin: 0 0 3px;
+  }
+
+  .lane-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+
+  .uc {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13.5px;
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--board);
+    margin-bottom: 7px;
+  }
+
+  .uc:last-child {
+    margin-bottom: 0;
+  }
+
+  .uc b {
+    color: var(--accent);
+    font-family: Georgia, serif;
+    font-size: 11px;
+    flex: none;
+    padding-top: 2px;
+  }
+
+  .actor-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .actor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    padding: 7px 14px;
+    border-radius: 999px;
+  }
+
+  .ext-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .ext-card {
+    flex: 1 1 260px;
+    border: 1.5px solid var(--accent);
+    border-radius: 10px;
+    padding: 11px 14px;
+    background: var(--accent-soft);
+  }
+
+  .ext-card h4 {
+    margin: 0 0 3px;
+    font-size: 13.5px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .ext-card p {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  .rel {
+    margin-top: 16px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+  }
+
+  .rel h4 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .rel ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  .rel li {
+    margin: 4px 0;
+  }
+
+  .rel em {
+    color: var(--primary);
+    font-style: normal;
+    font-weight: 700;
+  }
 
   /* ===== Authen: step exchange ===== */
-  .steps { display: flex; flex-direction: column; gap: 10px; }
-  .phase { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); margin: 10px 2px 2px; }
-  .phase:first-child { margin-top: 0; }
-  .step { display: grid; grid-template-columns: 30px 100px 1fr; gap: 12px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; box-shadow: var(--shadow); }
-  .step .no { width: 26px; height: 26px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .step .dir { font-size: 12px; font-weight: 700; color: var(--ink-soft); text-align: center; white-space: nowrap; }
-  .step .dir span { display: block; font-size: 10.5px; font-weight: 600; color: var(--muted); letter-spacing: .03em; }
-  .step .body { font-size: 13.5px; }
-  .step .body code { background: var(--sys-soft); padding: 1px 6px; border-radius: 5px; color: var(--primary); font-weight: 600; }
-  .step.ok  { border-left: 4px solid var(--good); }
-  .step.err { border-left: 4px solid var(--crit); }
-  .step.ok .no  { background: var(--good); }
-  .step.err .no { background: var(--crit); }
-  @media (max-width: 640px) { .step { grid-template-columns: 26px 1fr; } .step .dir { display: none; } }
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-  .note { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 10px 10px 0; font-size: 14px; color: var(--ink-soft); margin-top: 16px; }
-  .note strong { color: var(--ink); }
-  .note em { color: var(--primary); font-style: normal; font-weight: 700; }
+  .phase {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 10px 2px 2px;
+  }
+
+  .phase:first-child {
+    margin-top: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 30px 100px 1fr;
+    gap: 12px;
+    align-items: center;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .step .no {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step .dir {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .step .dir span {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: .03em;
+  }
+
+  .step .body {
+    font-size: 13.5px;
+  }
+
+  .step .body code {
+    background: var(--sys-soft);
+    padding: 1px 6px;
+    border-radius: 5px;
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .step.ok {
+    border-left: 4px solid var(--good);
+  }
+
+  .step.err {
+    border-left: 4px solid var(--crit);
+  }
+
+  .step.ok .no {
+    background: var(--good);
+  }
+
+  .step.err .no {
+    background: var(--crit);
+  }
+
+  @media (max-width: 640px) {
+    .step {
+      grid-template-columns: 26px 1fr;
+    }
+
+    .step .dir {
+      display: none;
+    }
+  }
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 12px 16px;
+    border-radius: 0 10px 10px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 16px;
+  }
+
+  .note strong {
+    color: var(--ink);
+  }
+
+  .note em {
+    color: var(--primary);
+    font-style: normal;
+    font-weight: 700;
+  }
 
   /* mapping table */
-  .tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
-  table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--panel); }
-  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { background: var(--primary-soft); color: var(--primary); font-weight: 700; font-size: 12.5px; letter-spacing: .03em; text-transform: uppercase; white-space: nowrap; }
-  tr:last-child td { border-bottom: none; }
-  td code { background: var(--accent-soft); color: var(--accent); padding: 1px 6px; border-radius: 5px; }
-  .req-id { font-family: Georgia, serif; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tbl-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
 
-  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+    background: var(--panel);
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  td code {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 5px;
+  }
+
+  .req-id {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+  }
 </style>
 
 <div class="wrap">
@@ -178,13 +836,182 @@
     </div>
   </header>
 
-  <!-- 01 ACTORS -->
+  <!-- Requirement -->
   <section>
     <div class="sec-head">
-      <span class="sec-num">01</span>
+      <div>
+        <h2>System Requirements</h2>
+        <p class="sec-desc">ตรวจสอบความครบถ้วนว่าออกแบบครอบคลุมทุกข้อในเอกสารความต้องการ</p>
+        <a class="sec-desc" target="__blank" href="Payroll system requirement.pdf">อ้างอิงเอกสารความต้องการ (PDF)</a>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ข้อ</th>
+            <th>ความต้องการ</th>
+            <th>Use Case</th>
+            <th>ผู้รับผิดชอบ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="req-id">1.1</td>
+            <td>ดึงข้อมูลบุคลากรจาก PMIS (ชื่อ, รหัส, รูป, ธนาคาร/บัญชี)</td>
+            <td>เข้าสู่ระบบ + ดึงข้อมูล PMIS + ตรวจสอบ token</td>
+            <td>ระบบ / API Authen</td>
+          </tr>
+          <tr>
+            <td class="req-id">2.1–2.4</td>
+            <td>นำเข้าแหล่งงบประมาณ, รายได้, รายการหัก, บัญชีธนาคาร</td>
+            <td>Upload รายได้ / รายการหัก / งบประมาณ / บัญชี</td>
+            <td>Admin หน่วยงานต้นทาง</td>
+          </tr>
+          <tr>
+            <td class="req-id">2.5</td>
+            <td>นำเข้าด้วยการ upload ไฟล์ excel โดย admin ที่รับผิดชอบ</td>
+            <td>(รวมในทุก use case นำเข้า — <code>excel upload</code>)</td>
+            <td>Admin หน่วยงานต้นทาง</td>
+          </tr>
+          <tr>
+            <td class="req-id">3.1</td>
+            <td>ตรวจสอบ + search ตามประเภท/เดือน/หน่วยงาน</td>
+            <td>ตรวจสอบ/ค้นหาข้อมูล</td>
+            <td>Admin คลังและพัสดุ</td>
+          </tr>
+          <tr>
+            <td class="req-id">3.2</td>
+            <td>แก้ไขบางรายการ / ยกเลิกทั้งชุดให้ upload ใหม่</td>
+            <td>แก้ไข / ยกเลิกทั้งชุด</td>
+            <td>Admin คลังและพัสดุ</td>
+          </tr>
+          <tr>
+            <td class="req-id">3.3</td>
+            <td>ยืนยันความถูกต้อง (บางรายการ/ทั้งหมด)</td>
+            <td>ยืนยันความถูกต้อง</td>
+            <td>Admin คลังและพัสดุ</td>
+          </tr>
+          <tr>
+            <td class="req-id">3.4</td>
+            <td>Export excel รูปแบบส่งธนาคาร</td>
+            <td>Export excel ส่งธนาคาร</td>
+            <td>Admin คลังและพัสดุ</td>
+          </tr>
+          <tr>
+            <td class="req-id">4.1</td>
+            <td>แสดง profile บุคลากร + บัญชีธนาคาร</td>
+            <td>ดู Profile บุคลากร</td>
+            <td>User</td>
+          </tr>
+          <tr>
+            <td class="req-id">4.2</td>
+            <td>แสดงเฉพาะข้อมูลที่ยืนยันแล้วเท่านั้น</td>
+            <td>ดูรายได้/รายการหัก («include» ยืนยันแล้ว)</td>
+            <td>User</td>
+          </tr>
+          <tr>
+            <td class="req-id">4.3</td>
+            <td>ดูรายบุคคล + search + ย้อนหลัง</td>
+            <td>ดูรายได้/รายการหักของตน</td>
+            <td>User</td>
+          </tr>
+          <tr>
+            <td class="req-id">4.4</td>
+            <td>พิมพ์เอกสารยืนยันรายได้ (รายเดือน/สะสมทั้งปี) เพื่อภาษี</td>
+            <td>พิมพ์เอกสารยืนยันรายได้</td>
+            <td>User</td>
+          </tr>
+          <tr>
+            <td class="req-id">4.5</td>
+            <td>ดูภาพรวม + search + ย้อนหลัง</td>
+            <td>ดูภาพรวม admin/superadmin</td>
+            <td>Admin / Super Admin</td>
+          </tr>
+          <tr>
+            <td class="req-id">5.1</td>
+            <td>แบ่งสิทธิ์ 3 ระดับ + สร้าง/จัดการบัญชี</td>
+            <td>จัดการบัญชี &amp; สิทธิ์</td>
+            <td>Super Admin</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section>
+    <!-- 01 MAIN FLOW -->
+    <section>
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <div>
+          <h2>Flow หลักของระบบ — ตั้งแต่นำเข้าจนถึงจ่ายเงิน</h2>
+          <p class="sec-desc">เส้นทางข้อมูลรายเดือน: นำเข้า → ตรวจสอบ → ยืนยัน → (แสดงให้ user &amp; export ส่งธนาคาร)
+            พร้อม loop แก้ไขเมื่อข้อมูลผิด</p>
+        </div>
+      </div>
+      <div class="board">
+        <div class="flow">
+          <div class="node n-start vflow-node pill">เริ่ม : รอบจ่ายเงินรายเดือน</div>
+          <div class="arrow-down"></div>
+          <div class="node n-src vflow-node">Admin หน่วยงานต้นทาง<small>upload excel : รายได้ / รายการหัก / งบประมาณ /
+              บัญชี</small></div>
+          <div class="arrow-down"></div>
+          <div class="node n-sys vflow-node">ระบบบันทึกข้อมูล<small>สถานะ : รอตรวจสอบ</small></div>
+          <div class="arrow-down"></div>
+          <div class="node n-fin vflow-node">Admin คลังและพัสดุ<small>ค้นหา &amp; ตรวจสอบ (ประเภท / เดือน /
+              หน่วยงาน)</small></div>
+          <div class="arrow-down"></div>
+          <div class="decision">ข้อมูลถูกต้อง ?</div>
+          <div class="arrow-down"></div>
+
+          <div class="branch">
+            <div class="branch-col">
+              <span class="branch-tag tag-no">✗ ไม่ถูกต้อง</span>
+              <div class="arrow-down"></div>
+              <div class="node n-fin vflow-node">แก้ไขบางรายการ<small>หรือยกเลิกทั้งชุดของหน่วยงานนั้น</small></div>
+              <div class="arrow-down"></div>
+              <div class="node n-src vflow-node">หน่วยงานต้นทางแก้ไข<small>แล้ว upload ไฟล์ใหม่</small></div>
+              <div class="loopback">↺ วนกลับไปขั้น "ระบบบันทึกข้อมูล" เพื่อตรวจสอบใหม่</div>
+            </div>
+            <div class="branch-col">
+              <span class="branch-tag tag-yes">✓ ถูกต้อง</span>
+              <div class="arrow-down"></div>
+              <div class="node n-fin vflow-node">Admin คลังและพัสดุ<small>กดยืนยัน (บางรายการ / ทั้งหมด)</small></div>
+              <div class="arrow-down"></div>
+              <div class="node n-store vflow-node">ข้อมูลสถานะ : ยืนยันแล้ว</div>
+            </div>
+          </div>
+
+          <div class="arrow-down" data-label="ข้อมูลที่ยืนยันแล้ว → 3 ปลายทาง"></div>
+          <div class="fanout">
+            <div class="fanout-col">
+              <div class="node n-fin">Export excel<small>รูปแบบส่งธนาคาร</small></div>
+              <div class="arrow-down"></div>
+              <div class="node n-good">🏦 ธนาคารเบิกจ่าย / โอนเงิน</div>
+            </div>
+            <div class="fanout-col">
+              <div class="node n-user">User เห็นรายได้ / รายการหัก<small>+ พิมพ์เอกสารยืนยันรายได้</small></div>
+            </div>
+            <div class="fanout-col">
+              <div class="node n-fin">Admin / Superadmin<small>ดูภาพรวม + ย้อนหลัง</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <strong>กติกาสำคัญ (ข้อ 4.2):</strong> ข้อมูลจะแสดงในหน้า User
+        <em>เฉพาะที่ผ่านการยืนยันจากงานคลังและพัสดุแล้วเท่านั้น</em> — ข้อมูลสถานะ "รอตรวจสอบ" จะไม่ปรากฏต่อ User
+        โดยเด็ดขาด
+      </div>
+    </section>
+
+    <!-- 02 ACTORS -->
+    <div class="sec-head">
+      <span class="sec-num">02</span>
       <div>
         <h2>ผู้เกี่ยวข้องกับระบบ (Actors)</h2>
-        <p class="sec-desc">แบ่งตามสิทธิ์การใช้งาน 4 ระดับ ตามข้อ 5 ของ requirement บวกกับระบบภายนอกที่เชื่อมต่อ 2 ระบบ</p>
+        <p class="sec-desc">แบ่งตามสิทธิ์การใช้งาน 4 ระดับ ตามข้อ 5 ของ requirement บวกกับระบบภายนอกที่เชื่อมต่อ 2 ระบบ
+        </p>
       </div>
     </div>
     <div class="grid actors">
@@ -221,217 +1048,300 @@
     </div>
   </section>
 
-  <!-- 02 USE CASE -->
-  <section>
-    <div class="sec-head">
-      <span class="sec-num">02</span>
-      <div>
-        <h2>Use Case</h2>
-        <p class="sec-desc">จัดกลุ่ม use case ตาม actor หลักที่รับผิดชอบ ภายในขอบเขตระบบ (system boundary) — ตัวเลขในวงเล็บอ้างอิงข้อใน requirement</p>
-      </div>
-    </div>
-
-    <div class="board">
-      <div class="actor-row">
-        <span class="actor-badge" style="background:#B7862F">👤 User (บุคลากร)</span>
-        <span class="actor-badge" style="background:#5B7C99">👤 Admin หน่วยงานต้นทาง</span>
-        <span class="actor-badge" style="background:#0F5E5A">👤 Admin คลังและพัสดุ</span>
-        <span class="actor-badge" style="background:#A23A2E">👤 Super Admin</span>
-      </div>
-
-      <div class="boundary">
-        <span class="boundary-label">ขอบเขตระบบ · Payroll System</span>
-        <div class="lanes">
-          <div class="lane" style="--lanec:#B7862F">
-            <p class="lane-h">User (บุคลากร)</p>
-            <p class="lane-sub">ข้อ 4 · 5.1.3</p>
-            <div class="uc"><b>4.1</b><span>ดู Profile บุคลากร + บัญชีธนาคาร</span></div>
-            <div class="uc"><b>4.3</b><span>ดูรายได้ / รายการหักของตน (ค้นหา + ย้อนหลัง)</span></div>
-            <div class="uc"><b>4.4</b><span>พิมพ์เอกสารยืนยันรายได้ (รายเดือน / สะสมทั้งปี)</span></div>
-          </div>
-          <div class="lane" style="--lanec:#5B7C99">
-            <p class="lane-h">Admin หน่วยงานต้นทาง</p>
-            <p class="lane-sub">HR / งานบริการสังคม · ข้อ 2</p>
-            <div class="uc"><b>2.1</b><span>นำเข้าแหล่งงบประมาณ</span></div>
-            <div class="uc"><b>2.2</b><span>Upload รายได้ (excel)</span></div>
-            <div class="uc"><b>2.3</b><span>Upload รายการหัก (excel)</span></div>
-            <div class="uc"><b>2.4</b><span>นำเข้าบัญชีธนาคาร</span></div>
-          </div>
-          <div class="lane" style="--lanec:#0F5E5A">
-            <p class="lane-h">Admin คลังและพัสดุ</p>
-            <p class="lane-sub">ข้อ 3 · 4.5</p>
-            <div class="uc"><b>3.1</b><span>ตรวจสอบ / ค้นหาข้อมูล</span></div>
-            <div class="uc"><b>3.2</b><span>แก้ไข / ยกเลิกทั้งชุด</span></div>
-            <div class="uc"><b>3.3</b><span>ยืนยันความถูกต้อง</span></div>
-            <div class="uc"><b>3.4</b><span>Export excel ส่งธนาคาร</span></div>
-            <div class="uc"><b>4.5</b><span>ดูภาพรวม + ย้อนหลัง</span></div>
-          </div>
-          <div class="lane" style="--lanec:#A23A2E">
-            <p class="lane-h">Super Admin</p>
-            <p class="lane-sub">ข้อ 5.1.1</p>
-            <div class="uc"><b>5.1</b><span>จัดการบัญชีผู้ใช้ &amp; สิทธิ์</span></div>
-            <div class="uc"><b>4.5</b><span>ดูภาพรวมทุกหน่วยงาน + ย้อนหลัง</span></div>
-          </div>
-          <div class="lane" style="--lanec:#0F5E5A; grid-column: 1 / -1">
-            <p class="lane-h">ร่วมกันทุก role · การเชื่อมโยงข้อมูล และ Authen (ข้อ 1)</p>
-            <div class="actor-row" style="margin:8px 0 0">
-              <span class="uc" style="margin:0"><b>1</b><span>เข้าสู่ระบบ (Login)</span></span>
-              <span class="uc" style="margin:0"><b>1</b><span>ตรวจสอบ / รีเฟรช Token</span></span>
-              <span class="uc" style="margin:0"><b>1.1</b><span>ดึงข้อมูลบุคลากรจาก PMIS</span></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="ext-row">
-          <div class="ext-card">
-            <h4>🖥️ ระบบ PMIS / API Authen <span style="color:var(--muted);font-weight:500">(External)</span></h4>
-            <p>ยืนยันตัวตน (login / token) และเป็นแหล่งข้อมูลพื้นฐานบุคลากร: ชื่อ, รหัส, รูป, ธนาคาร / เลขบัญชี</p>
-          </div>
-          <div class="ext-card">
-            <h4>🏦 ธนาคาร <span style="color:var(--muted);font-weight:500">(External)</span></h4>
-            <p>รับไฟล์ excel ที่ยืนยันแล้วจาก use case 3.4 เพื่อดำเนินการเบิกจ่าย / โอนเงิน</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="rel">
-        <h4>ความสัมพันธ์ «include» / «extend»</h4>
-        <ul>
-          <li>เข้าสู่ระบบ <em>«include»</em> ตรวจสอบ Token &amp; ดึงข้อมูลบุคลากรจาก PMIS</li>
-          <li>ดู Profile <em>«include»</em> ดึงข้อมูลบุคลากรจาก PMIS</li>
-          <li>ดูรายได้ / รายการหักของตน <em>«include»</em> แสดงเฉพาะข้อมูลที่ <b>ยืนยันแล้ว</b> (ข้อ 4.2)</li>
-          <li>แก้ไข / ยกเลิกทั้งชุด <em>«extend»</em> ตรวจสอบข้อมูล (ทำเมื่อพบว่าไม่ถูกต้อง)</li>
-          <li>พิมพ์เอกสารยืนยันรายได้ <em>«extend»</em> ดูรายได้ / รายการหักของตน</li>
-        </ul>
-      </div>
-    </div>
-    <p class="caption">วาดด้วย HTML/CSS ล้วน (ไม่ใช้ไลบรารี) — แต่ละ use case ในระบบนี้ผูกกับ actor หลักตัวเดียว จึงจัดเป็น lane เพื่อความชัดเจน แทนเส้นเชื่อมที่ตัดกัน</p>
-  </section>
-
-  <!-- 03 AUTHEN FLOW -->
+  <!-- 03 USE CASE -->
   <section>
     <div class="sec-head">
       <span class="sec-num">03</span>
       <div>
+        <h2>Use Case Diagram</h2>
+        <p class="sec-desc">จัดกลุ่ม use case ตาม actor หลักที่รับผิดชอบ ภายในขอบเขตระบบ (system boundary) —
+          ตัวเลขในวงเล็บอ้างอิงข้อใน requirement</p>
+      </div>
+    </div>
+
+    <div class="board" style="padding:18px 10px;overflow-x:auto">
+      <svg viewBox="0 0 1140 960" width="100%" style="min-width:820px;font-family:inherit"
+        xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="uml-arr" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="9" markerHeight="7" orient="auto">
+            <path d="M1 1L11 5L1 9" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round" />
+          </marker>
+        </defs>
+
+        <!-- ═══ System Boundary ═══ -->
+        <rect x="178" y="18" width="764" height="920" rx="14" fill="none" stroke="var(--primary)" stroke-width="2"
+          stroke-dasharray="10 5" />
+        <rect x="410" y="4" width="260" height="28" rx="14" fill="var(--board)" stroke="var(--primary)"
+          stroke-width="1.5" />
+        <text x="540" y="24" fill="var(--primary)" font-size="13" font-weight="700" text-anchor="middle">ขอบเขตระบบ ·
+          Payroll System</text>
+
+        <!-- ═══ Association Lines (drawn first, behind ellipses) ═══ -->
+        <g stroke="var(--line-strong)" stroke-width="1.3" fill="none" opacity=".45">
+          <!-- User → Use Cases -->
+          <line x1="90" y1="335" x2="230" y2="280" />
+          <line x1="90" y1="345" x2="220" y2="368" />
+          <line x1="90" y1="355" x2="230" y2="458" />
+          <!-- Admin ต้นทาง → Use Cases -->
+          <line x1="90" y1="660" x2="232" y2="565" />
+          <line x1="90" y1="670" x2="238" y2="648" />
+          <line x1="90" y1="680" x2="232" y2="728" />
+          <line x1="90" y1="690" x2="232" y2="812" />
+          <!-- Admin คลัง → Use Cases -->
+          <line x1="1050" y1="370" x2="835" y2="280" />
+          <line x1="1050" y1="380" x2="828" y2="368" />
+          <line x1="1050" y1="395" x2="822" y2="450" />
+          <line x1="1050" y1="405" x2="822" y2="540" />
+          <line x1="1050" y1="415" x2="818" y2="648" />
+          <!-- Super Admin → Use Cases -->
+          <line x1="1050" y1="615" x2="818" y2="648" />
+          <line x1="1050" y1="630" x2="670" y2="868" />
+          <!-- PMIS → Use Cases -->
+          <line x1="1005" y1="98" x2="825" y2="80" />
+          <line x1="1005" y1="126" x2="675" y2="168" />
+          <!-- ธนาคาร → Use Cases -->
+          <line x1="1015" y1="828" x2="822" y2="540" />
+        </g>
+
+        <!-- ═══ «include» / «extend» Arrows ═══ -->
+        <g fill="none">
+          <!-- Login ──«include»──▷ Token -->
+          <line x1="515" y1="80" x2="568" y2="80" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 3"
+            marker-end="url(#uml-arr)" />
+          <text x="541" y="68" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="middle"
+            font-style="italic">«include»</text>
+
+          <!-- Login ──«include»──▷ ดึง PMIS -->
+          <line x1="455" y1="103" x2="485" y2="140" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 3"
+            marker-end="url(#uml-arr)" />
+          <text x="495" y="116" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="start"
+            font-style="italic">«include»</text>
+
+          <!-- Profile ──«include»──▷ ดึง PMIS -->
+          <line x1="405" y1="258" x2="488" y2="196" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 3"
+            marker-end="url(#uml-arr)" />
+          <text x="425" y="230" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="start"
+            font-style="italic">«include»</text>
+
+          <!-- แก้ไข ──«extend»──▷ ตรวจสอบ -->
+          <line x1="710" y1="342" x2="710" y2="308" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 3"
+            marker-end="url(#uml-arr)" />
+          <text x="752" y="328" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="start"
+            font-style="italic">«extend»</text>
+
+          <!-- พิมพ์เอกสาร ──«extend»──▷ ดูรายได้ -->
+          <line x1="350" y1="430" x2="350" y2="400" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 3"
+            marker-end="url(#uml-arr)" />
+          <text x="388" y="420" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="start"
+            font-style="italic">«extend»</text>
+        </g>
+
+        <!-- ═══ Use Cases (Ellipses) ═══ -->
+        <g>
+          <!-- ── Authentication ── -->
+          <ellipse cx="400" cy="80" rx="115" ry="26" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="400" y="84" fill="var(--ink)" font-size="12.5" font-weight="600" text-anchor="middle">เข้าสู่ระบบ
+            (Login)</text>
+          <text x="400" y="120" fill="var(--muted)" font-size="10" font-style="italic" text-anchor="middle">← ทุก Actor
+            ใช้งาน</text>
+
+          <ellipse cx="700" cy="80" rx="122" ry="26" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="700" y="84" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">ตรวจสอบ/รีเฟรช
+            Token</text>
+
+          <ellipse cx="550" cy="168" rx="122" ry="30" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="550" y="162" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">ดึงข้อมูลบุคลากร</text>
+          <text x="550" y="178" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">จาก PMIS</text>
+
+          <!-- ── User (บุคลากร) ── -->
+          <ellipse cx="350" cy="280" rx="118" ry="26" fill="var(--panel)" stroke="var(--user)" stroke-width="1.8" />
+          <text x="350" y="284" fill="var(--ink)" font-size="12.5" font-weight="600" text-anchor="middle">ดู Profile
+            บุคลากร</text>
+
+          <ellipse cx="350" cy="368" rx="128" ry="30" fill="var(--panel)" stroke="var(--user)" stroke-width="1.8" />
+          <text x="350" y="362" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">ดูรายได้/รายการหัก</text>
+          <text x="350" y="378" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">ของตน</text>
+
+          <ellipse cx="350" cy="458" rx="118" ry="28" fill="var(--panel)" stroke="var(--user)" stroke-width="1.8" />
+          <text x="350" y="452" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">พิมพ์เอกสาร</text>
+          <text x="350" y="468" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">ยืนยันรายได้</text>
+
+          <!-- ── Admin หน่วยงานต้นทาง ── -->
+          <ellipse cx="350" cy="565" rx="116" ry="28" fill="var(--panel)" stroke="var(--src)" stroke-width="1.8" />
+          <text x="350" y="559" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">นำเข้า</text>
+          <text x="350" y="575" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">แหล่งงบประมาณ</text>
+
+          <ellipse cx="350" cy="648" rx="112" ry="28" fill="var(--panel)" stroke="var(--src)" stroke-width="1.8" />
+          <text x="350" y="642" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">Upload
+            รายได้</text>
+          <text x="350" y="658" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">(excel)</text>
+
+          <ellipse cx="350" cy="728" rx="116" ry="28" fill="var(--panel)" stroke="var(--src)" stroke-width="1.8" />
+          <text x="350" y="722" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">Upload
+            รายการหัก</text>
+          <text x="350" y="738" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">(excel)</text>
+
+          <ellipse cx="350" cy="812" rx="116" ry="26" fill="var(--panel)" stroke="var(--src)" stroke-width="1.8" />
+          <text x="350" y="816" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">นำเข้าบัญชีธนาคาร</text>
+
+          <!-- ── Admin คลังและพัสดุ ── -->
+          <ellipse cx="710" cy="280" rx="122" ry="26" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="710" y="284" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">ตรวจสอบ/ค้นหาข้อมูล</text>
+
+          <ellipse cx="710" cy="368" rx="118" ry="26" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="710" y="372" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">แก้ไข/ยกเลิกทั้งชุด</text>
+
+          <ellipse cx="710" cy="450" rx="112" ry="26" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="710" y="454" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">ยืนยันความถูกต้อง</text>
+
+          <ellipse cx="710" cy="540" rx="112" ry="28" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="710" y="534" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">Export
+            excel</text>
+          <text x="710" y="550" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">ส่งธนาคาร</text>
+
+          <ellipse cx="710" cy="648" rx="108" ry="28" fill="var(--panel)" stroke="var(--primary)" stroke-width="1.8" />
+          <text x="710" y="642" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">ดูภาพรวม</text>
+          <text x="710" y="658" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">+
+            ย้อนหลัง</text>
+
+          <!-- ── Super Admin ── -->
+          <ellipse cx="550" cy="868" rx="120" ry="28" fill="var(--panel)" stroke="var(--crit)" stroke-width="1.8" />
+          <text x="550" y="862" fill="var(--ink)" font-size="12" font-weight="600"
+            text-anchor="middle">จัดการบัญชีผู้ใช้</text>
+          <text x="550" y="878" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">&amp;
+            สิทธิ์</text>
+        </g>
+
+        <!-- ═══ Actors — Stick Figures ═══ -->
+        <g stroke-linecap="round">
+          <!-- User (บุคลากร) — left -->
+          <circle cx="65" cy="305" r="10" fill="var(--board)" stroke="var(--user)" stroke-width="2.2" />
+          <line x1="65" y1="315" x2="65" y2="342" stroke="var(--user)" stroke-width="2.2" />
+          <line x1="48" y1="326" x2="82" y2="326" stroke="var(--user)" stroke-width="2.2" />
+          <line x1="65" y1="342" x2="50" y2="362" stroke="var(--user)" stroke-width="2.2" />
+          <line x1="65" y1="342" x2="80" y2="362" stroke="var(--user)" stroke-width="2.2" />
+          <text x="65" y="380" fill="var(--user)" font-size="12" font-weight="700" text-anchor="middle">User</text>
+          <text x="65" y="394" fill="var(--user)" font-size="10.5" text-anchor="middle">(บุคลากร)</text>
+
+          <!-- Admin หน่วยงานต้นทาง — left -->
+          <circle cx="65" cy="635" r="10" fill="var(--board)" stroke="var(--src)" stroke-width="2.2" />
+          <line x1="65" y1="645" x2="65" y2="672" stroke="var(--src)" stroke-width="2.2" />
+          <line x1="48" y1="656" x2="82" y2="656" stroke="var(--src)" stroke-width="2.2" />
+          <line x1="65" y1="672" x2="50" y2="692" stroke="var(--src)" stroke-width="2.2" />
+          <line x1="65" y1="672" x2="80" y2="692" stroke="var(--src)" stroke-width="2.2" />
+          <text x="65" y="710" fill="var(--src)" font-size="12" font-weight="700" text-anchor="middle">Admin</text>
+          <text x="65" y="724" fill="var(--src)" font-size="10.5" text-anchor="middle">หน่วยงานต้นทาง</text>
+
+          <!-- Admin คลังและพัสดุ — right -->
+          <circle cx="1075" cy="345" r="10" fill="var(--board)" stroke="var(--primary)" stroke-width="2.2" />
+          <line x1="1075" y1="355" x2="1075" y2="382" stroke="var(--primary)" stroke-width="2.2" />
+          <line x1="1058" y1="366" x2="1092" y2="366" stroke="var(--primary)" stroke-width="2.2" />
+          <line x1="1075" y1="382" x2="1060" y2="402" stroke="var(--primary)" stroke-width="2.2" />
+          <line x1="1075" y1="382" x2="1090" y2="402" stroke="var(--primary)" stroke-width="2.2" />
+          <text x="1075" y="420" fill="var(--primary)" font-size="12" font-weight="700"
+            text-anchor="middle">Admin</text>
+          <text x="1075" y="434" fill="var(--primary)" font-size="10.5" text-anchor="middle">คลังและพัสดุ</text>
+
+          <!-- Super Admin — right -->
+          <circle cx="1075" cy="585" r="10" fill="var(--board)" stroke="var(--crit)" stroke-width="2.2" />
+          <line x1="1075" y1="595" x2="1075" y2="622" stroke="var(--crit)" stroke-width="2.2" />
+          <line x1="1058" y1="606" x2="1092" y2="606" stroke="var(--crit)" stroke-width="2.2" />
+          <line x1="1075" y1="622" x2="1060" y2="642" stroke="var(--crit)" stroke-width="2.2" />
+          <line x1="1075" y1="622" x2="1090" y2="642" stroke="var(--crit)" stroke-width="2.2" />
+          <text x="1075" y="660" fill="var(--crit)" font-size="12" font-weight="700" text-anchor="middle">Super
+            Admin</text>
+        </g>
+
+        <!-- ═══ External Systems (Rectangles) ═══ -->
+        <g>
+          <!-- ระบบ PMIS / API Authen -->
+          <rect x="1005" y="78" width="140" height="62" rx="6" fill="var(--sys-soft)" stroke="var(--line-strong)"
+            stroke-width="1.5" />
+          <text x="1075" y="97" fill="var(--muted)" font-size="9.5" text-anchor="middle"
+            font-style="italic">«external»</text>
+          <text x="1075" y="115" fill="var(--ink)" font-size="11.5" font-weight="600" text-anchor="middle">ระบบ
+            PMIS</text>
+          <text x="1075" y="131" fill="var(--ink)" font-size="11.5" font-weight="600" text-anchor="middle">API
+            Authen</text>
+
+          <!-- ธนาคาร -->
+          <rect x="1015" y="805" width="120" height="50" rx="6" fill="var(--sys-soft)" stroke="var(--line-strong)"
+            stroke-width="1.5" />
+          <text x="1075" y="824" fill="var(--muted)" font-size="9.5" text-anchor="middle"
+            font-style="italic">«external»</text>
+          <text x="1075" y="843" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="middle">🏦
+            ธนาคาร</text>
+        </g>
+
+        <!-- ═══ Legend ═══ -->
+        <g transform="translate(200,948)">
+          <line x1="0" y1="0" x2="28" y2="0" stroke="var(--line-strong)" stroke-width="1.5" />
+          <text x="33" y="4" fill="var(--muted)" font-size="10">association</text>
+          <line x1="115" y1="0" x2="148" y2="0" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3" />
+          <path d="M145 -3L152 0L145 3" fill="none" stroke="var(--accent)" stroke-width="1.2" />
+          <text x="157" y="4" fill="var(--muted)" font-size="10">«include» / «extend»</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 04 AUTHEN FLOW -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <div>
         <h2>Flow ข้อ 1 — การเชื่อมโยงข้อมูล Authen จาก API</h2>
-        <p class="sec-desc">ลำดับการทำงานจริงตามโปรเจ็ค <code>api_authen_of_med</code> — login ด้วย application-key + JWT แล้วดึงข้อมูลบุคลากร (PMIS) มาแสดง</p>
+        <p class="sec-desc">ลำดับการทำงานจริงตามโปรเจ็ค <code>api_authen_of_med</code> — login ด้วย application-key +
+          JWT แล้วดึงข้อมูลบุคลากร (PMIS) มาแสดง</p>
       </div>
     </div>
     <div class="board">
       <div class="steps">
         <div class="phase">Phase A · เข้าสู่ระบบ (Login)</div>
-        <div class="step"><span class="no">1</span><span class="dir">ผู้ใช้ → FE<span>กรอกข้อมูล</span></span><span class="body">กรอก <code>username</code> / <code>password</code> ที่หน้า Frontend</span></div>
-        <div class="step"><span class="no">2</span><span class="dir">FE → BE<span>ส่งต่อ</span></span><span class="body">ส่งข้อมูล login ไปยัง Payroll Backend</span></div>
-        <div class="step"><span class="no">3</span><span class="dir">BE → API<span>request</span></span><span class="body"><code>POST /api/employee/login</code> · แนบ header <code>application-key</code> (secret เข้ารหัส AES) + body <code>{username, md5(md5(password))}</code></span></div>
-        <div class="step"><span class="no">4</span><span class="dir">API<span>ประมวลผล</span></span><span class="body"><code>verifySecretKey</code> → ตรวจสอบ credential กับฐานข้อมูลบุคลากร</span></div>
-        <div class="step ok"><span class="no">5</span><span class="dir">API → BE<span>200 สำเร็จ</span></span><span class="body">คืน <code>JWT access token</code> + ข้อมูล user</span></div>
-        <div class="step err"><span class="no">5</span><span class="dir">API → BE<span>401 ล้มเหลว</span></span><span class="body">คืน Unauthorized → FE แจ้ง "username / password ไม่ถูกต้อง"</span></div>
-        <div class="step"><span class="no">6</span><span class="dir">BE → API<span>ดึง PMIS</span></span><span class="body"><code>GET /employee/username/:username</code> + <code>/profileImg</code> (ป้องกันด้วย application-key)</span></div>
-        <div class="step"><span class="no">7</span><span class="dir">API → BE<span>master data</span></span><span class="body">คืน ชื่อ-นามสกุล, รหัสบุคลากร, รูปภาพ, ธนาคาร / เลขบัญชี</span></div>
-        <div class="step"><span class="no">8</span><span class="dir">BE → FE<span>เข้าระบบ</span></span><span class="body">ส่ง token + profile → แสดงหน้า Profile ของผู้ใช้</span></div>
+        <div class="step"><span class="no">1</span><span class="dir">ผู้ใช้ → FE<span>กรอกข้อมูล</span></span><span
+            class="body">กรอก <code>username</code> / <code>password</code> ที่หน้า Frontend</span></div>
+        <div class="step"><span class="no">2</span><span class="dir">FE → BE<span>ส่งต่อ</span></span><span
+            class="body">ส่งข้อมูล login ไปยัง Payroll Backend</span></div>
+        <div class="step"><span class="no">3</span><span class="dir">BE → API<span>request</span></span><span
+            class="body"><code>POST /api/employee/login</code> · แนบ header <code>application-key</code> (secret
+            เข้ารหัส AES) + body <code>{username, md5(md5(password))}</code></span></div>
+        <div class="step"><span class="no">4</span><span class="dir">API<span>ประมวลผล</span></span><span
+            class="body"><code>verifySecretKey</code> → ตรวจสอบ credential กับฐานข้อมูลบุคลากร</span></div>
+        <div class="step ok"><span class="no">5</span><span class="dir">API → BE<span>200 สำเร็จ</span></span><span
+            class="body">คืน <code>JWT access token</code> + ข้อมูล user</span></div>
+        <div class="step err"><span class="no">5</span><span class="dir">API → BE<span>401 ล้มเหลว</span></span><span
+            class="body">คืน Unauthorized → FE แจ้ง "username / password ไม่ถูกต้อง"</span></div>
+        <div class="step"><span class="no">6</span><span class="dir">BE → API<span>ดึง PMIS</span></span><span
+            class="body"><code>GET /employee/username/:username</code> + <code>/profileImg</code> (ป้องกันด้วย
+            application-key)</span></div>
+        <div class="step"><span class="no">7</span><span class="dir">API → BE<span>master data</span></span><span
+            class="body">คืน ชื่อ-นามสกุล, รหัสบุคลากร, รูปภาพ, ธนาคาร / เลขบัญชี</span></div>
+        <div class="step"><span class="no">8</span><span class="dir">BE → FE<span>เข้าระบบ</span></span><span
+            class="body">ส่ง token + profile → แสดงหน้า Profile ของผู้ใช้</span></div>
 
         <div class="phase">Phase B · ทุก request ถัดไป</div>
-        <div class="step"><span class="no">9</span><span class="dir">FE → API<span>verify</span></span><span class="body">แนบ <code>Bearer token</code> → <code>GET /authenticate</code> → verify + refresh token (อายุ 1 ชม.)</span></div>
+        <div class="step"><span class="no">9</span><span class="dir">FE → API<span>verify</span></span><span
+            class="body">แนบ <code>Bearer token</code> → <code>GET /authenticate</code> → verify + refresh token (อายุ 1
+            ชม.)</span></div>
       </div>
     </div>
     <div class="note">
-      <strong>สรุปกลไก:</strong> ระบบ Payroll ไม่เก็บรหัสผ่านเอง — ยืนยันตัวตนผ่าน API กลางของคณะฯ 2 ชั้น: <code>application-key</code> (ยืนยันว่าเป็น client ที่ได้รับอนุญาต) และ <code>JWT Bearer token</code> (ยืนยัน session ผู้ใช้) ส่วนข้อมูลพื้นฐานบุคลากรเป็น master data ที่ดึงสด ไม่แก้ไขในระบบ Payroll
+      <strong>สรุปกลไก:</strong> ระบบ Payroll ไม่เก็บรหัสผ่านเอง — ยืนยันตัวตนผ่าน API กลางของคณะฯ 2 ชั้น:
+      <code>application-key</code> (ยืนยันว่าเป็น client ที่ได้รับอนุญาต) และ <code>JWT Bearer token</code> (ยืนยัน
+      session ผู้ใช้) ส่วนข้อมูลพื้นฐานบุคลากรเป็น master data ที่ดึงสด ไม่แก้ไขในระบบ Payroll
     </div>
   </section>
 
-  <!-- 04 MAIN FLOW -->
-  <section>
-    <div class="sec-head">
-      <span class="sec-num">04</span>
-      <div>
-        <h2>Flow หลักของระบบ — ตั้งแต่นำเข้าจนถึงจ่ายเงิน</h2>
-        <p class="sec-desc">เส้นทางข้อมูลรายเดือน: นำเข้า → ตรวจสอบ → ยืนยัน → (แสดงให้ user &amp; export ส่งธนาคาร) พร้อม loop แก้ไขเมื่อข้อมูลผิด</p>
-      </div>
-    </div>
-    <div class="board">
-      <div class="flow">
-        <div class="node n-start vflow-node pill">เริ่ม : รอบจ่ายเงินรายเดือน</div>
-        <div class="arrow-down"></div>
-        <div class="node n-src vflow-node">Admin หน่วยงานต้นทาง<small>upload excel : รายได้ / รายการหัก / งบประมาณ / บัญชี</small></div>
-        <div class="arrow-down"></div>
-        <div class="node n-sys vflow-node">ระบบบันทึกข้อมูล<small>สถานะ : รอตรวจสอบ</small></div>
-        <div class="arrow-down"></div>
-        <div class="node n-fin vflow-node">Admin คลังและพัสดุ<small>ค้นหา &amp; ตรวจสอบ (ประเภท / เดือน / หน่วยงาน)</small></div>
-        <div class="arrow-down"></div>
-        <div class="decision">ข้อมูลถูกต้อง ?</div>
-        <div class="arrow-down"></div>
 
-        <div class="branch">
-          <div class="branch-col">
-            <span class="branch-tag tag-no">✗ ไม่ถูกต้อง</span>
-            <div class="arrow-down"></div>
-            <div class="node n-fin vflow-node">แก้ไขบางรายการ<small>หรือยกเลิกทั้งชุดของหน่วยงานนั้น</small></div>
-            <div class="arrow-down"></div>
-            <div class="node n-src vflow-node">หน่วยงานต้นทางแก้ไข<small>แล้ว upload ไฟล์ใหม่</small></div>
-            <div class="loopback">↺ วนกลับไปขั้น "ระบบบันทึกข้อมูล" เพื่อตรวจสอบใหม่</div>
-          </div>
-          <div class="branch-col">
-            <span class="branch-tag tag-yes">✓ ถูกต้อง</span>
-            <div class="arrow-down"></div>
-            <div class="node n-fin vflow-node">Admin คลังและพัสดุ<small>กดยืนยัน (บางรายการ / ทั้งหมด)</small></div>
-            <div class="arrow-down"></div>
-            <div class="node n-store vflow-node">ข้อมูลสถานะ : ยืนยันแล้ว</div>
-          </div>
-        </div>
 
-        <div class="arrow-down" data-label="ข้อมูลที่ยืนยันแล้ว → 3 ปลายทาง"></div>
-        <div class="fanout">
-          <div class="fanout-col">
-            <div class="node n-fin">Export excel<small>รูปแบบส่งธนาคาร</small></div>
-            <div class="arrow-down"></div>
-            <div class="node n-good">🏦 ธนาคารเบิกจ่าย / โอนเงิน</div>
-          </div>
-          <div class="fanout-col">
-            <div class="node n-user">User เห็นรายได้ / รายการหัก<small>+ พิมพ์เอกสารยืนยันรายได้</small></div>
-          </div>
-          <div class="fanout-col">
-            <div class="node n-fin">Admin / Superadmin<small>ดูภาพรวม + ย้อนหลัง</small></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="note">
-      <strong>กติกาสำคัญ (ข้อ 4.2):</strong> ข้อมูลจะแสดงในหน้า User <em>เฉพาะที่ผ่านการยืนยันจากงานคลังและพัสดุแล้วเท่านั้น</em> — ข้อมูลสถานะ "รอตรวจสอบ" จะไม่ปรากฏต่อ User โดยเด็ดขาด
-    </div>
-  </section>
 
-  <!-- 05 MAPPING -->
-  <section>
-    <div class="sec-head">
-      <span class="sec-num">05</span>
-      <div>
-        <h2>ตารางเชื่อมโยง Requirement → Use Case</h2>
-        <p class="sec-desc">ตรวจสอบความครบถ้วนว่าออกแบบครอบคลุมทุกข้อในเอกสารความต้องการ</p>
-      </div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>ข้อ</th><th>ความต้องการ</th><th>Use Case</th><th>ผู้รับผิดชอบ</th></tr></thead>
-        <tbody>
-          <tr><td class="req-id">1.1</td><td>ดึงข้อมูลบุคลากรจาก PMIS (ชื่อ, รหัส, รูป, ธนาคาร/บัญชี)</td><td>เข้าสู่ระบบ + ดึงข้อมูล PMIS + ตรวจสอบ token</td><td>ระบบ / API Authen</td></tr>
-          <tr><td class="req-id">2.1–2.4</td><td>นำเข้าแหล่งงบประมาณ, รายได้, รายการหัก, บัญชีธนาคาร</td><td>Upload รายได้ / รายการหัก / งบประมาณ / บัญชี</td><td>Admin หน่วยงานต้นทาง</td></tr>
-          <tr><td class="req-id">2.5</td><td>นำเข้าด้วยการ upload ไฟล์ excel โดย admin ที่รับผิดชอบ</td><td>(รวมในทุก use case นำเข้า — <code>excel upload</code>)</td><td>Admin หน่วยงานต้นทาง</td></tr>
-          <tr><td class="req-id">3.1</td><td>ตรวจสอบ + search ตามประเภท/เดือน/หน่วยงาน</td><td>ตรวจสอบ/ค้นหาข้อมูล</td><td>Admin คลังและพัสดุ</td></tr>
-          <tr><td class="req-id">3.2</td><td>แก้ไขบางรายการ / ยกเลิกทั้งชุดให้ upload ใหม่</td><td>แก้ไข / ยกเลิกทั้งชุด</td><td>Admin คลังและพัสดุ</td></tr>
-          <tr><td class="req-id">3.3</td><td>ยืนยันความถูกต้อง (บางรายการ/ทั้งหมด)</td><td>ยืนยันความถูกต้อง</td><td>Admin คลังและพัสดุ</td></tr>
-          <tr><td class="req-id">3.4</td><td>Export excel รูปแบบส่งธนาคาร</td><td>Export excel ส่งธนาคาร</td><td>Admin คลังและพัสดุ</td></tr>
-          <tr><td class="req-id">4.1</td><td>แสดง profile บุคลากร + บัญชีธนาคาร</td><td>ดู Profile บุคลากร</td><td>User</td></tr>
-          <tr><td class="req-id">4.2</td><td>แสดงเฉพาะข้อมูลที่ยืนยันแล้วเท่านั้น</td><td>ดูรายได้/รายการหัก («include» ยืนยันแล้ว)</td><td>User</td></tr>
-          <tr><td class="req-id">4.3</td><td>ดูรายบุคคล + search + ย้อนหลัง</td><td>ดูรายได้/รายการหักของตน</td><td>User</td></tr>
-          <tr><td class="req-id">4.4</td><td>พิมพ์เอกสารยืนยันรายได้ (รายเดือน/สะสมทั้งปี) เพื่อภาษี</td><td>พิมพ์เอกสารยืนยันรายได้</td><td>User</td></tr>
-          <tr><td class="req-id">4.5</td><td>ดูภาพรวม + search + ย้อนหลัง</td><td>ดูภาพรวม admin/superadmin</td><td>Admin / Super Admin</td></tr>
-          <tr><td class="req-id">5.1</td><td>แบ่งสิทธิ์ 3 ระดับ + สร้าง/จัดการบัญชี</td><td>จัดการบัญชี &amp; สิทธิ์</td><td>Super Admin</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <footer>
-    ออกแบบจากเอกสาร <em>Payroll system requirement.pdf</em> · Flow ข้อ 1 อ้างอิงโครงสร้างจริงของโปรเจ็ค api_authen_of_med · diagram ทั้งหมดเป็น HTML/CSS ล้วน — แก้ข้อความได้ทันทีโดยไม่ต้อง build
-  </footer>
 </div>
